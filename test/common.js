@@ -35,26 +35,9 @@ var app = new Vue ({
 			}
 
 			for(kk = 0; kk < 9; kk++) {
-				/*var actionnn = actions[kk];
-				console.log(actionnn)*/
 				this.participants[kk].actions = actions[kk]
 			}
 
-			// На случай, если сумма акций не 1000
-
-/*			var summActions = 0;
-			for(l = 0; l < 9; l++) {
-				summActions = summActions + actions[l]
-			}
-
-			if (summActions == 1000) {
-				console.log("Сумма акций - " + summActions)
-			} else if (summActions < 1000) {
-				console.log("Сумма акций меньше на " + (1000 - summActions) + " - " + summActions)
-			} else {
-				console.log("Сумма акций больше на " + (summActions - 1000) + " - " + summActions)
-			}
-*/
 		},
 
 		// Распределение статусов
@@ -92,8 +75,56 @@ var app = new Vue ({
 			чтобы в этот маленький массив число попадало единожды, то есть не должно
 			было повторений. Под конец вложенного цикла мы задаём значение свойству
 			at - наш маленький массив
-
 			*/
+
+			// Проходим по всем участникам
+			for(i = 0; i < 9; i++) {
+
+				// Массив для всех, кроме одного
+				var arr = [];
+				// Массив для нескольких из всех, кроме одного
+				var	arrAt = [];
+
+				for(j = 1; j < 10; j++) {
+					arr[j - 1] = j
+				}
+
+				arr.splice(i, 1);
+
+				for(k = 0; k < 3; k++) {
+					var random = this.randomIntegerArr(0, arr.length);
+
+					/*Если вдруг значение случайного числа оказалось большим, чем
+					длинаа массива, то увеличим к-во итераций и завершим текущую*/
+					if (arr[random] == undefined) {
+						k = k - 1
+						continue
+					}
+
+					arrAt.push(arr[random]);
+					arr.splice(random, 1)
+				}
+
+				// Пополняем список тех, у кого участник хочет получить ресурсы
+				this.participants[i].at = arrAt
+
+			}
+		},
+
+		// Функция, обеспечивающая равную вероятность попадения числа
+		// из заданного диапазона
+		randomIntegerArr: function (min, max) {
+			min = min - 0.5;
+			max = max + 0.5;
+
+			// Проверить работоспособность кода можно постепенно увеличивая значение этой переменной
+			var randomMinMaxDifference = max - min,
+					randomNonInteger = randomMinMaxDifference + min,
+					randomValue = Math.random(),
+					randomValueRange = randomValue * randomNonInteger,
+					randomValueRangeRound = Math.round(randomValueRange);
+
+			return randomValueRangeRound;
 		}
 
 	},
@@ -115,7 +146,7 @@ var app = new Vue ({
 
 		this.resourceAllocation();
 		this.distributionOfStatus();
-		this.want()
+		this.want();
 
 	}
 
