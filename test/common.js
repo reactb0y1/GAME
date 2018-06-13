@@ -82,8 +82,10 @@ var app = new Vue ({
 
 				// Массив для всех, кроме одного
 				var arr = [];
-				// Массив для нескольких из всех, кроме одного
+				// Массив для адресатов запроса
 				var	arrAt = [];
+				// Массив для претендентов на подтверждение запроса
+				var arrWant = [];
 
 				for(j = 1; j < 10; j++) {
 					arr[j - 1] = j
@@ -91,6 +93,7 @@ var app = new Vue ({
 
 				arr.splice(i, 1);
 
+				// Наполняем массив адресатов
 				for(k = 0; k < 3; k++) {
 					var random = this.randomIntegerArr(0, arr.length);
 
@@ -107,6 +110,24 @@ var app = new Vue ({
 
 				// Пополняем список тех, у кого участник хочет получить ресурсы
 				this.participants[i].at = arrAt
+
+				// Наполняем массив претендернтов на подтверждение запроса
+				for(l = 0; l < 3; l++) {
+					var random = this.randomIntegerArr(0, arr.length);
+
+					/*Если вдруг значение случайного числа оказалось большим, чем
+					длинаа массива, то увеличим к-во итераций и завершим текущую*/
+					if (arr[random] == undefined) {
+						l = l - 1
+						continue
+					}
+
+					arrWant.push(arr[random]);
+					arr.splice(random, 1)
+				}
+
+				// Пополняем список тех, у кого участник хочет получить ресурсы
+				this.participants[i].pretender = arrWant
 
 			}
 		},
@@ -139,7 +160,8 @@ var app = new Vue ({
 				share: Math.random(),
 				actions: null,
 				want: 100,
-				at: [1, 2, 3]
+				at: null,
+				pretender: null
 			})
 
 		}
