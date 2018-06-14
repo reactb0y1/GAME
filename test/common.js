@@ -1,9 +1,13 @@
+// import 
+
 var app = new Vue ({
 
 	el: "#container",
 
 	data: {
-		participants: []
+		participants: [],
+		participantsTable: [],
+		dealArr: []
 	},
 
 	methods: {
@@ -64,6 +68,7 @@ var app = new Vue ({
 
 		},
 
+		// Определяем кому готов отдать ресурсы и у кого готов получить
 		want: function() {
 			/*
 			Двойной цикл. На уровне первого мы создаём массив чисел из
@@ -91,6 +96,7 @@ var app = new Vue ({
 					arr[j - 1] = j
 				}
 
+				// Удаляем номер нашего участника
 				arr.splice(i, 1);
 
 				// Наполняем массив адресатов
@@ -146,8 +152,38 @@ var app = new Vue ({
 					randomValueRangeRound = Math.round(randomValueRange);
 
 			return randomValueRangeRound;
-		}
+		},
 
+		// Сделка
+		deal: function() {
+
+			for(i = 0; i < 9; i++) {
+
+				// Формируем список всех тех, у кого готов принять ресурсы ...
+				var at = this.participants[i].at;
+
+				console.log("\n")
+				// console.log("Участник " + (i + 1) + " готов принять ресурсы у игроков " + 
+					// at[0] + ", " + at[1] + " и " + at[2] + ". А те, в свою очередь, готовы отдать следующим участникам")
+				
+				// Узнаём то, кому они готовы отдавать ресурсы
+				for(j = 0; j < 3; j++) {
+
+					var pretender = this.participants[at[j] - 1].pretender;
+					// console.log("Участник " + at[j] + ": " + pretender[0] + ", " + pretender[1] + 
+						// " и " + pretender[2])
+
+					if((i + 1) == pretender[0] || (i + 1) == pretender[1] || 
+						(i + 1) == pretender[2]) {
+						console.log("Сделка состоится между " + (i + 1) + " и " + at[j])
+						
+						this.participants[i].purchase.push(at[j])
+
+					}
+
+				}
+			}
+		}
 	},
 
 	mounted: function() {
@@ -161,14 +197,22 @@ var app = new Vue ({
 				actions: null,
 				want: 100,
 				at: null,
-				pretender: null
+				pretender: null,
+				purchase: []
 			})
 
+		}
+
+		for(j = 1; j < 10; j++) {
+			this.participantsTable.push({
+				number: j
+			})
 		}
 
 		this.resourceAllocation();
 		this.distributionOfStatus();
 		this.want();
+		this.deal();
 
 	}
 

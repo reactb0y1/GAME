@@ -9,18 +9,31 @@
 
 	<div id="container">
 
-		<ul>
+		<ul class="participants">
 			<li v-for='(participant, index) in participants' class="participant">
 
 				<p>Участник номер {{participant.number}}</p>
 				<p>Статус: {{participant.status}}</p>
 				<p>Ресурсов: {{participant.actions}}</p>
 				<p>Претендует на: {{participant.want}}</p>
-				<p>У участников: {{participant.at[0]}}, {{participant.at[1]}}, {{participant.at[2]}}</p>
-				<p>Готов отдать: {{participant.pretender[0]}}, {{participant.pretender[1]}}, {{participant.pretender[2]}}</p>
+				<p>Готов купить у: {{participant.at[0]}}, {{participant.at[1]}}, {{participant.at[2]}}</p>
+				<p>Готов продать: {{participant.pretender[0]}}, {{participant.pretender[1]}}, {{participant.pretender[2]}}</p>
+				<p>Покупаю у: {{participant.purchase}}</p>
 				
 			</li>
 		</ul>
+
+		<table>
+			<tr>
+				<!-- <td ref="name"></td> -->
+				<td ref="name"></td>
+				<td v-for='participantTable in participantsTable'>{{participantTable.number}}</td>
+			</tr>
+			<tr v-for='(participantTable, indexTr) in participantsTable'>
+				<td>{{participantTable.number}}</td>
+				<td v-for='(participantTable, indexTd) in participantsTable'>*</td>
+			</tr>
+		</table>
 		
 		<div id="panel"></div>
 
@@ -36,4 +49,8 @@
 
 <!-- 
 - рандомизатор нужно поправлять
+- один раз не отобразился банкир
+- распределять по файлам
+- использовать классы
+	js ООП; классы
  -->

@@ -4,6 +4,10 @@
 	font-size: 14px;
 }
 
+.container {
+	position: relative;
+}
+
 .participant {
 	list-style-type: none;
     margin-top: 5px;
@@ -15,7 +19,7 @@
 	padding-left: 25px;
 }
 
-ul {
+.participants {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -29,4 +33,22 @@ ul {
 	bottom: 0;
 	background-color: burlywood;
 	display: flex;
+}
+
+table {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: auto;
+	height: auto;
+	display: none;
+}
+
+td {
+	border: 1px solid black;
+	width: 20px;
+	height: 20px;
 }
