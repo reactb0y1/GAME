@@ -22,20 +22,12 @@
 				
 			</li>
 		</ul>
-
-		<table>
-			<tr>
-				<!-- <td ref="name"></td> -->
-				<td ref="name"></td>
-				<td v-for='participantTable in participantsTable'>{{participantTable.number}}</td>
-			</tr>
-			<tr v-for='(participantTable, indexTr) in participantsTable'>
-				<td>{{participantTable.number}}</td>
-				<td v-for='(participantTable, indexTd) in participantsTable'>*</td>
-			</tr>
-		</table>
 		
-		<div id="panel"></div>
+		<div id="panel">
+
+			<input id="purchase" type="button" value="Сделка" v-on:click="purchase">
+			
+		</div>
 
 	</div>
 

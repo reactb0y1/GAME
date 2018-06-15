@@ -6,7 +6,6 @@ var app = new Vue ({
 
 	data: {
 		participants: [],
-		participantsTable: [],
 		dealArr: []
 	},
 
@@ -157,6 +156,7 @@ var app = new Vue ({
 		// Сделка
 		deal: function() {
 
+
 			for(i = 0; i < 9; i++) {
 
 				// Формируем список всех тех, у кого готов принять ресурсы ...
@@ -183,7 +183,48 @@ var app = new Vue ({
 
 				}
 			}
+		},
+
+		purchase: function() {
+
+			console.log("-------")
+
+			for(i = 0; i < 9; i++) {
+				
+				// Наш продавец, у которого мы будетм брать ресурсы
+				var seller = this.participants[i].purchase[0];
+
+				// Если продавца нет
+				if (seller == undefined) continue
+
+				console.log("\n")
+				console.log("Участник № " + (i+1) + " будет продавать участнику № " + seller)
+
+				// Объём ресурсов продавца и покупателя
+				var sellerResours = this.participants[seller - 1].actions
+				var bayerResors = this.participants[i].actions
+
+				console.log("У которых " + sellerResours + " и " + bayerResors + 
+					" ресурсов соответственно")
+
+				// Объём продаваемых ресурсов
+				var want = this.participants[seller - 1].want;
+
+				// Остатки ресурсов у продавца и покупателя
+				var balancSseller = sellerResours - want;
+				var balancBayer = this.participants[i].actions + want;
+
+				// Меняем данные в массиве
+				this.participants[seller - 1].actions = balancSseller;
+				this.participants[i].actions = balancBayer;
+
+				console.log("В результате сделки у продавца осталось " 
+					+ balancSseller + ", а у покупателя - " + balancBayer);
+
+			}
+
 		}
+
 	},
 
 	mounted: function() {
@@ -201,12 +242,6 @@ var app = new Vue ({
 				purchase: []
 			})
 
-		}
-
-		for(j = 1; j < 10; j++) {
-			this.participantsTable.push({
-				number: j
-			})
 		}
 
 		this.resourceAllocation();

@@ -33,22 +33,11 @@
 	bottom: 0;
 	background-color: burlywood;
 	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-table {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	margin: auto;
-	width: auto;
-	height: auto;
-	display: none;
-}
-
-td {
-	border: 1px solid black;
-	width: 20px;
-	height: 20px;
+#purchase {
+	width: 60px;
+	height: 30px;
 }
