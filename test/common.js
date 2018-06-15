@@ -100,7 +100,7 @@ var app = new Vue ({
 
 				// Наполняем массив адресатов
 				for(k = 0; k < 3; k++) {
-					var random = this.randomIntegerArr(0, arr.length);
+					var random = this.randomInteger(0, arr.length);
 
 					/*Если вдруг значение случайного числа оказалось большим, чем
 					длинаа массива, то увеличим к-во итераций и завершим текущую*/
@@ -118,7 +118,7 @@ var app = new Vue ({
 
 				// Наполняем массив претендернтов на подтверждение запроса
 				for(l = 0; l < 3; l++) {
-					var random = this.randomIntegerArr(0, arr.length);
+					var random = this.randomInteger(0, arr.length);
 
 					/*Если вдруг значение случайного числа оказалось большим, чем
 					длинаа массива, то увеличим к-во итераций и завершим текущую*/
@@ -139,7 +139,7 @@ var app = new Vue ({
 
 		// Функция, обеспечивающая равную вероятность попадения числа
 		// из заданного диапазона
-		randomIntegerArr: function (min, max) {
+		randomInteger: function (min, max) {
 			min = min - 0.5;
 			max = max + 0.5;
 
@@ -208,11 +208,11 @@ var app = new Vue ({
 					" ресурсов соответственно")
 
 				// Объём продаваемых ресурсов
-				var want = this.participants[seller - 1].want;
+				var wantResourse = this.participants[seller - 1].wantResourse;
 
 				// Остатки ресурсов у продавца и покупателя
-				var balancSseller = sellerResours - want;
-				var balancBayer = this.participants[i].actions + want;
+				var balancSseller = sellerResours - wantResourse;
+				var balancBayer = this.participants[i].actions + wantResourse;
 
 				// Меняем данные в массиве
 				this.participants[seller - 1].actions = balancSseller;
@@ -236,7 +236,7 @@ var app = new Vue ({
 				status: "Не заёмщик",
 				share: Math.random(),
 				actions: null,
-				want: 100,
+				wantResourse: this.randomInteger(0, 100),
 				at: null,
 				pretender: null,
 				purchase: []
