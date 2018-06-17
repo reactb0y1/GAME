@@ -185,30 +185,52 @@ var app = new Vue ({
 			}
 		},
 
+		// Обмен
 		purchase: function() {
 
 			console.log("-------")
 
 			for(i = 0; i < 9; i++) {
-				
-				// Наш продавец, у которого мы будетм брать ресурсы
-				var seller = this.participants[i].purchase[0];
 
-				// Если продавца нет
-				if (seller == undefined) continue
+				// Готов взять ресурсы у этих участников
+				var arrPurchase = this.participants[i].purchase;
+				// Но сотрудничать будет только с этим
+				var seller = 0;
+				
+				// А если их 0, ...
+				if (arrPurchase.length == 0) {
+					// console.log("Учасник номер " + (i+1) + " не участвует")
+					continue
+					// один ...
+				} else if (arrPurchase.length == 1) {
+					var seller = arrPurchase[0]
+					// console.log("Участник номер " + (i+1) + " покупает у участника номер " + seller)
+					// или несколько
+				} else {
+					var numberSeller = this.randomInteger(0, arrPurchase.length) - 1;
+					var seller = this.participants[i].purchase[numberSeller];
+
+					if (seller == undefined || numberSeller == undefined) {
+						i = i - 1
+						continue
+					}
+
+					// console.log("Участник номер " + (i+1) + " покупает у участника номер " + seller)
+				}
 
 				console.log("\n")
-				console.log("Участник № " + (i+1) + " будет продавать участнику № " + seller)
+				console.log("Участник № " + (i+1) + " будет получать " +
+					this.participants[i].wantResourse + " ресурсов у участника № " + seller)
 
 				// Объём ресурсов продавца и покупателя
 				var sellerResours = this.participants[seller - 1].actions
 				var bayerResors = this.participants[i].actions
 
-				console.log("У которых " + sellerResours + " и " + bayerResors + 
+				console.log("Изначально у них " + bayerResors + " и " + sellerResours + 
 					" ресурсов соответственно")
 
 				// Объём продаваемых ресурсов
-				var wantResourse = this.participants[seller - 1].wantResourse;
+				var wantResourse = this.participants[i].wantResourse;
 
 				// Остатки ресурсов у продавца и покупателя
 				var balancSseller = sellerResours - wantResourse;
@@ -218,8 +240,8 @@ var app = new Vue ({
 				this.participants[seller - 1].actions = balancSseller;
 				this.participants[i].actions = balancBayer;
 
-				console.log("В результате сделки у продавца осталось " 
-					+ balancSseller + ", а у покупателя - " + balancBayer);
+				console.log("В результате сделки у них осталось " 
+					+ balancBayer + " и " + balancSseller + " ресурсов");
 
 			}
 
