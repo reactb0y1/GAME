@@ -38,6 +38,21 @@
 }
 
 #purchase {
-	width: 60px;
+	width: 70px;
+	height: 30px;
+}
+
+#allNull {
+	width: 90px;
+	height: 30px;
+}
+
+#count {
+	position: absolute;
+	left: 10px;
+}
+
+#deactivate {
+	width: 100px;
 	height: 30px;
 }

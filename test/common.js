@@ -6,7 +6,7 @@ var app = new Vue ({
 
 	data: {
 		participants: [],
-		dealArr: []
+		count: 0
 	},
 
 	methods: {
@@ -14,30 +14,32 @@ var app = new Vue ({
 		// Распределение ресурсов
 		resourceAllocation: function() {
 
+			var arrLenght = this.participants.length;
+			
 			// Этот массив будем наполнять долями
 			var shares = [];
 
 			// Создаём массив с долями
-			for(i = 0; i < 9; i++) {
+			for(i = 0; i < arrLenght; i++) {
 				var share = +this.participants[i].share;
 				shares.push(share)
 			}
 			
 			// Сумма долей
 			var summ = 0;
-			for(j = 0; j < 9; j++) {
+			for(j = 0; j < arrLenght; j++) {
 				summ = summ + shares[j]
 			}
 
 			// Высчитываем акции
 			var actions = [];
-			for(k = 0; k < 9; k++) {
+			for(k = 0; k < arrLenght; k++) {
 				var action = this.participants[k].share * 1000 / summ;
 				action = Math.round(action);
 				actions.push(action)
 			}
 
-			for(kk = 0; kk < 9; kk++) {
+			for(kk = 0; kk < arrLenght; kk++) {
 				this.participants[kk].actions = actions[kk]
 			}
 
@@ -46,9 +48,10 @@ var app = new Vue ({
 		// Распределение статусов
 		distributionOfStatus: function() {
 
+			var arrLenght = this.participants.length;
 			var numbers = [];
 
-			for(i = 1; i < 10; i++) {
+			for(i = 1; i < arrLenght + 1; i++) {
 				numbers.push(i)
 			}
 
@@ -62,7 +65,7 @@ var app = new Vue ({
 				var randomBorrower = Math.round(Math.random() * (numbers.length - 1)) + 1
 				this.participants[randomBorrower - 1].status = "Заёмщик";
 				numbers.splice(randomBorrower - 1, 1);
-				
+
 			}
 
 		},
@@ -81,8 +84,10 @@ var app = new Vue ({
 			at - наш маленький массив
 			*/
 
+			var arrLenght = this.participants.length;
+
 			// Проходим по всем участникам
-			for(i = 0; i < 9; i++) {
+			for(i = 0; i < arrLenght; i++) {
 
 				// Массив для всех, кроме одного
 				var arr = [];
@@ -91,7 +96,7 @@ var app = new Vue ({
 				// Массив для претендентов на подтверждение запроса
 				var arrWant = [];
 
-				for(j = 1; j < 10; j++) {
+				for(j = 1; j < arrLenght + 1; j++) {
 					arr[j - 1] = j
 				}
 
@@ -143,7 +148,8 @@ var app = new Vue ({
 			min = min - 0.5;
 			max = max + 0.5;
 
-			// Проверить работоспособность кода можно постепенно увеличивая значение этой переменной
+			// Проверить работоспособность кода можно постепенно увеличивая
+			// значение этой переменной
 			var randomMinMaxDifference = max - min,
 					randomNonInteger = randomMinMaxDifference + min,
 					randomValue = Math.random(),
@@ -156,22 +162,24 @@ var app = new Vue ({
 		// Сделка
 		deal: function() {
 
+			var arrLenght = this.participants.length;
 
-			for(i = 0; i < 9; i++) {
+			for(i = 0; i < arrLenght; i++) {
 
 				// Формируем список всех тех, у кого готов принять ресурсы ...
 				var at = this.participants[i].at;
 
 				console.log("\n")
 				// console.log("Участник " + (i + 1) + " готов принять ресурсы у игроков " + 
-					// at[0] + ", " + at[1] + " и " + at[2] + ". А те, в свою очередь, готовы отдать следующим участникам")
+					// at[0] + ", " + at[1] + " и " + at[2] +
+					// ". А те, в свою очередь, готовы отдать следующим участникам")
 				
 				// Узнаём то, кому они готовы отдавать ресурсы
 				for(j = 0; j < 3; j++) {
 
 					var pretender = this.participants[at[j] - 1].pretender;
-					// console.log("Участник " + at[j] + ": " + pretender[0] + ", " + pretender[1] + 
-						// " и " + pretender[2])
+					// console.log("Участник " + at[j] + ": " + pretender[0] + ", " +
+					// pretender[1] + " и " + pretender[2])
 
 					if((i + 1) == pretender[0] || (i + 1) == pretender[1] || 
 						(i + 1) == pretender[2]) {
@@ -188,9 +196,10 @@ var app = new Vue ({
 		// Обмен
 		purchase: function() {
 
+			var arrLenght = this.participants.length;
 			console.log("-------")
 
-			for(i = 0; i < 9; i++) {
+			for(i = 0; i < arrLenght; i++) {
 
 				// Готов взять ресурсы у этих участников
 				var arrPurchase = this.participants[i].purchase;
@@ -204,7 +213,8 @@ var app = new Vue ({
 					// один ...
 				} else if (arrPurchase.length == 1) {
 					var seller = arrPurchase[0]
-					// console.log("Участник номер " + (i+1) + " покупает у участника номер " + seller)
+					// console.log("Участник номер " + (i+1) +
+					// " покупает у участника номер " + seller)
 					// или несколько
 				} else {
 					var numberSeller = this.randomInteger(0, arrPurchase.length) - 1;
@@ -215,19 +225,20 @@ var app = new Vue ({
 						continue
 					}
 
-					// console.log("Участник номер " + (i+1) + " покупает у участника номер " + seller)
+					// console.log("Участник номер " + (i+1) +
+					// " покупает у участника номер " + seller)
 				}
 
 				console.log("\n")
-				console.log("Участник № " + (i+1) + " будет получать " +
-					this.participants[i].wantResourse + " ресурсов у участника № " + seller)
+				// console.log("Участник № " + (i+1) + " будет получать " +
+					// this.participants[i].wantResourse + " ресурсов у участника № " + seller)
 
 				// Объём ресурсов продавца и покупателя
 				var sellerResours = this.participants[seller - 1].actions
 				var bayerResors = this.participants[i].actions
 
-				console.log("Изначально у них " + bayerResors + " и " + sellerResours + 
-					" ресурсов соответственно")
+				// console.log("Изначально у них " + bayerResors + " и " + sellerResours + 
+					// " ресурсов соответственно")
 
 				// Объём продаваемых ресурсов
 				var wantResourse = this.participants[i].wantResourse;
@@ -240,8 +251,68 @@ var app = new Vue ({
 				this.participants[seller - 1].actions = balancSseller;
 				this.participants[i].actions = balancBayer;
 
-				console.log("В результате сделки у них осталось " 
-					+ balancBayer + " и " + balancSseller + " ресурсов");
+				// console.log("В результате сделки у них осталось " 
+					// + balancBayer + " и " + balancSseller + " ресурсов");
+
+			}
+
+		},
+
+		// Обнуляем и обновляем некоторые данные
+		allNull: function() {
+
+			var arrLenght = this.participants.length;
+			
+			for(i = 0; i < arrLenght; i++) {
+				this.participants[i].share = Math.random();
+				this.participants[i].actions = null;
+				this.participants[i].wantResourse = this.randomInteger(0, 100);
+				this.participants[i].at = null;
+				this.participants[i].pretender = null;
+				this.participants[i].purchase = [];
+
+			}
+
+			this.resourceAllocation();
+			this.want();
+			this.deal();
+			this.purchase();
+
+			var count = this.count + 1;
+			this.count = count;
+			
+		},
+
+		deactivate: function() {
+
+			var count = this.count;
+			var period = count%3;
+			var toEndYear = 3 - period;
+
+			console.log("До конца года осталось " + toEndYear)
+			console.log(period)
+
+			// Когда проходит год
+			if (count > 0 && period == 0) {
+				
+				outer: for(j = 0; j < 100; j++) {
+
+					
+				var arrLenght = this.participants.length;
+					// Проверяем есть ли у нас должники
+					for(i = 0; i < arrLenght; i++) {
+						var actions = this.participants[i].actions;
+
+						if (actions < 0) {
+							this.participants.splice(i, 1);
+							i = i - 1;
+							continue
+						}
+						if (arrLenght == i) break outer
+					}
+					
+				}
+
 
 			}
 
@@ -265,7 +336,7 @@ var app = new Vue ({
 			})
 
 		}
-
+		
 		this.resourceAllocation();
 		this.distributionOfStatus();
 		this.want();

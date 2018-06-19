@@ -26,6 +26,12 @@
 		<div id="panel">
 
 			<input id="purchase" type="button" value="Сделка" v-on:click="purchase">
+
+			<input id="allNull" type="button" value="Обновляем" v-on:click="allNull">
+
+			<input id="deactivate" type="button" value="Деактивация" v-on:click="deactivate">
+
+			<div id="count">Шагов: {{count}}</div>
 			
 		</div>
 
@@ -46,7 +52,9 @@
 - использовать классы
 	js ООП; классы
 
-	1. Рандомизировать выбор на того с кем будет осуществлена сделка
-	2. Решить кто покупатель, кто продавец, откорректировать переменные
+	if (seller == undefined || numberSeller == undefined) 
+		Такого рода условия наверняка можно записать как-то кратче
+
+- Деактивироваться должны все, у кого меньше 0, а не один
 
  -->
