@@ -142,6 +142,26 @@ var app = new Vue ({
 			}
 		},
 
+		wantLight: function() {
+
+			var arrLenght = this.participants.length;
+			var arr = [];
+			var arrWantLight = [];
+
+			for(i = 1; i < arrLenght + 1; i++) {
+				arr[i - 1] = i
+			}
+
+			for(j = 1; j < 4; j++) {
+
+				// var random = 
+
+			}
+
+			console.log(arr)
+
+		},
+
 		// Функция, обеспечивающая равную вероятность попадения числа
 		// из заданного диапазона
 		randomInteger: function (min, max) {
