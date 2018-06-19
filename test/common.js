@@ -128,7 +128,7 @@ var app = new Vue ({
 					/*Если вдруг значение случайного числа оказалось большим, чем
 					длинаа массива, то увеличим к-во итераций и завершим текущую*/
 					if (arr[random] == undefined) {
-						l = l - 1
+						// l = l - 1
 						continue
 					}
 
@@ -293,9 +293,10 @@ var app = new Vue ({
 			console.log(period)
 
 			// Когда проходит год
-			if (count > 0 && period == 0) {
+			// if (count > 0 && period == 0) {
+			if (count > 0) {
 				
-				outer: for(j = 0; j < 100; j++) {
+				// outer: for(j = 0; j < 100; j++) {
 
 					
 				var arrLenght = this.participants.length;
@@ -306,12 +307,13 @@ var app = new Vue ({
 						if (actions < 0) {
 							this.participants.splice(i, 1);
 							i = i - 1;
+							arrLenght = arrLenght - 1;
 							continue
 						}
-						if (arrLenght == i) break outer
+						// if (arrLenght == i) break outer
 					}
 					
-				}
+				// }
 
 
 			}
@@ -329,7 +331,7 @@ var app = new Vue ({
 				status: "Не заёмщик",
 				share: Math.random(),
 				actions: null,
-				wantResourse: this.randomInteger(0, 100),
+				wantResourse: this.randomInteger(0, 600),
 				at: null,
 				pretender: null,
 				purchase: []
