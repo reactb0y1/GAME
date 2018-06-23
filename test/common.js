@@ -70,98 +70,6 @@ var app = new Vue ({
 
 		},
 
-		// Определяем кому готов отдать ресурсы и у кого готов получить
-		want: function() {
-			/*
-			Двойной цикл. На уровне первого мы создаём массив чисел из
-			последовательности от 1 до 9. Тут же мы будем последовательно
-			удалять один из элементов. То есть на каждой итерации у нас будет 8
-			элементов без одного из чисел. Во вложенном цикле мы будем выбирать 3
-			числа из оставшихся 8 в массиве и копировать их в новый массив, который,
-			как это понятно, состоит из 3 элементов. Разумеется, нужно обеспечить то,
-			чтобы в этот маленький массив число попадало единожды, то есть не должно
-			было повторений. Под конец вложенного цикла мы задаём значение свойству
-			at - наш маленький массив
-			*/
-
-			var arrLenght = this.participants.length;
-
-			// Проходим по всем участникам
-			for(i = 0; i < arrLenght; i++) {
-
-				// Массив для всех, кроме одного
-				var arr = [];
-				// Массив для адресатов запроса
-				var	arrAt = [];
-				// Массив для претендентов на подтверждение запроса
-				var arrWant = [];
-
-				for(j = 1; j < arrLenght + 1; j++) {
-					arr[j - 1] = j
-				}
-
-				// Удаляем номер нашего участника
-				arr.splice(i, 1);
-
-				// Наполняем массив адресатов
-				for(k = 0; k < 3; k++) {
-					var random = this.randomInteger(0, arr.length);
-
-					/*Если вдруг значение случайного числа оказалось большим, чем
-					длинаа массива, то увеличим к-во итераций и завершим текущую*/
-					if (arr[random] == undefined) {
-						k = k - 1
-						continue
-					}
-
-					arrAt.push(arr[random]);
-					arr.splice(random, 1)
-				}
-
-				// Пополняем список тех, у кого участник хочет получить ресурсы
-				this.participants[i].at = arrAt
-
-				// Наполняем массив претендернтов на подтверждение запроса
-				for(l = 0; l < 3; l++) {
-					var random = this.randomInteger(0, arr.length);
-
-					/*Если вдруг значение случайного числа оказалось большим, чем
-					длинаа массива, то увеличим к-во итераций и завершим текущую*/
-					if (arr[random] == undefined) {
-						// l = l - 1
-						continue
-					}
-
-					arrWant.push(arr[random]);
-					arr.splice(random, 1)
-				}
-
-				// Пополняем список тех, у кого участник хочет получить ресурсы
-				this.participants[i].pretender = arrWant
-
-			}
-		},
-
-		wantLight: function() {
-
-			var arrLenght = this.participants.length;
-			var arr = [];
-			var arrWantLight = [];
-
-			for(i = 1; i < arrLenght + 1; i++) {
-				arr[i - 1] = i
-			}
-
-			for(j = 1; j < 4; j++) {
-
-				// var random = 
-
-			}
-
-			console.log(arr)
-
-		},
-
 		// Функция, обеспечивающая равную вероятность попадения числа
 		// из заданного диапазона
 		randomInteger: function (min, max) {
@@ -177,40 +85,6 @@ var app = new Vue ({
 					randomValueRangeRound = Math.round(randomValueRange);
 
 			return randomValueRangeRound;
-		},
-
-		// Сделка
-		deal: function() {
-
-			var arrLenght = this.participants.length;
-
-			for(i = 0; i < arrLenght; i++) {
-
-				// Формируем список всех тех, у кого готов принять ресурсы ...
-				var at = this.participants[i].at;
-
-				console.log("\n")
-				// console.log("Участник " + (i + 1) + " готов принять ресурсы у игроков " + 
-					// at[0] + ", " + at[1] + " и " + at[2] +
-					// ". А те, в свою очередь, готовы отдать следующим участникам")
-				
-				// Узнаём то, кому они готовы отдавать ресурсы
-				for(j = 0; j < 3; j++) {
-
-					var pretender = this.participants[at[j] - 1].pretender;
-					// console.log("Участник " + at[j] + ": " + pretender[0] + ", " +
-					// pretender[1] + " и " + pretender[2])
-
-					if((i + 1) == pretender[0] || (i + 1) == pretender[1] || 
-						(i + 1) == pretender[2]) {
-						console.log("Сделка состоится между " + (i + 1) + " и " + at[j])
-						
-						this.participants[i].purchase.push(at[j])
-
-					}
-
-				}
-			}
 		},
 
 		// Обмен
@@ -338,6 +212,103 @@ var app = new Vue ({
 
 			}
 
+		},
+
+		// Выбор участников для сделки
+		wantLight: function() {
+
+			// Длинна массива
+			var arrLenght = this.participants.length;
+			// Массив с числами, соответствующими участникам
+			var arr = [];
+			// Между какими участниками в дальгейшем будут сделки
+			var arrWantLight = [];
+
+			// Наполняем массив
+			for(i = 0; i < arrLenght; i++) {
+				arr[i] = i + 1
+			}
+
+			// Решаем между кем будет сделка
+			for(j = 0; j < 4; j++) {
+
+				var random = this.randomInteger(0, arrLenght) - 1;
+
+				if (random == undefined || random < 0 || arrWantLight == undefined) {
+					j = j - 1;
+					continue
+				}
+
+				arrWantLight[j] = arr[random];
+				arr.splice(random, 1);
+				arrLenght = arrLenght - 1;
+
+
+			}
+
+			// console.log(arrWantLight)
+			return arrWantLight
+
+
+		},
+
+		// Обмен (лайт версия)
+		exchange: function() {
+
+			var arrWantLight = this.wantLight();
+			var arrLenght = this.participants.length;
+
+			// Принимают и отдают ресурсы
+			var setParticipant = [arrWantLight[0], arrWantLight[1]];
+			var getParticipant = [arrWantLight[2], arrWantLight[3]];
+
+			// console.log("Принимают ресурсы: " + setParticipant)
+			// console.log("Отдают ресурсы: " + getParticipant)
+
+			/*console.log("Участник № " + setParticipant[0] + " принимает ресурсы от " + 
+				"учстника №" + getParticipant[0] + "\n" + 
+				"Участник № " + setParticipant[1] + " принимает ресурсы от " + 
+				"учстника №" + getParticipant[1])
+*/
+
+			// Ресурсы принимающих и отдающих до сделки, ...
+			var setResours = [this.participants[setParticipant[0] - 1].actions,
+			this.participants[setParticipant[1] - 1].actions];
+			var getResours = [this.participants[getParticipant[0] - 1].actions,
+			this.participants[getParticipant[1] - 1].actions];
+			var setResoursWant = [this.participants[setParticipant[0] - 1].wantResourse,
+			this.participants[setParticipant[1] - 1].wantResourse]
+			// console.log("Принимающие имеют ресурсы: " + setResours)
+			// console.log("Отдающие имеют ресурсы:" + getResours)
+			// console.log("Разница: " + setResoursWant)
+
+			// ... и после сделки
+			var setResoursAfter = [];
+			var getResoursAfter = [];
+
+			for(k = 0; k < 2; k++) {
+				setResoursAfter[k] = setResours[k] + setResoursWant[k];
+				getResoursAfter[k] = getResours[k] - setResoursWant[k]
+			}
+
+			for(l = 0; l < 2; l++) {
+				this.participants[setParticipant[l] - 1].actions = setResoursAfter[l]
+				this.participants[getParticipant[l] - 1].actions = getResoursAfter[l]
+			}
+
+			console.log("Состоится 2 сделки" + "\n" + 
+				"1) Участник №" + setParticipant[0] + ", владеющий " + setResours[0] + 
+				" ресурсами, берёт " + setResoursWant[0] + " ресурсов у участника №" +
+				getParticipant[0] + ", который изначально владеет " + getResours[0] +
+				" ресурсами. После сделки их баланс " + setResoursAfter[0] + " и " +
+				getResoursAfter[0] + "\n" +
+				"2) Участник №" + setParticipant[1] + ", владеющий " + setResours[1] + 
+				" ресурсами, берёт " + setResoursWant[1] + " ресурсов у участника №" +
+				getParticipant[1] + ", который изначально владеет " + getResours[1] +
+				" ресурсами. После сделки их баланс " + setResoursAfter[1] + " и " +
+				getResoursAfter[1])
+
+
 		}
 
 	},
@@ -351,7 +322,7 @@ var app = new Vue ({
 				status: "Не заёмщик",
 				share: Math.random(),
 				actions: null,
-				wantResourse: this.randomInteger(0, 600),
+				wantResourse: this.randomInteger(0, 200),
 				at: null,
 				pretender: null,
 				purchase: []
@@ -361,8 +332,8 @@ var app = new Vue ({
 		
 		this.resourceAllocation();
 		this.distributionOfStatus();
-		this.want();
-		this.deal();
+		// this.want();
+		// this.deal();
 
 	}
 
