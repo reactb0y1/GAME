@@ -49,24 +49,56 @@ var app = new Vue ({
 		distributionOfStatus: function() {
 
 			var arrLenght = this.participants.length;
-			var numbers = [];
 
-			for(i = 1; i < arrLenght + 1; i++) {
-				numbers.push(i)
+			// Обнуляем, если это надо
+			for(i = 0; i < arrLenght; i++) {
+				this.participants[i].status = null;
 			}
 
-			var randomBank = Math.random() * (numbers.length - 1);
-			randomBank = Math.round(randomBank) + 1;
+			// Пустые переменные для ролей наших участников
+			var arr = []
+			var bank = null;
+			var borrowers = [];
+			var nonBorrowers = [];
 
-			this.participants[randomBank - 1].status = "Банкир";
-			numbers.splice(randomBank - 1, 1);
+			// Наполняем наш вспомогательный массив
+			for(l = 0; l < arrLenght; l++) {
+				arr[l] = l + 1;
+			}
 
+			// Решаем какой участнико будет в роли банка
+			for (var k = 0; k < 1; k++) {
+				bank = this.randomInteger(1, arrLenght)
+
+				if (bank == 0) { k--; continue }
+				arr.splice(bank - 1, 1)
+				this.participants[bank-1].status = "Банк"
+
+			}
+
+			// Решаем кто будет заёмщиком
 			for(j = 0; j < 4; j++) {
-				var randomBorrower = Math.round(Math.random() * (numbers.length - 1)) + 1
-				this.participants[randomBorrower - 1].status = "Заёмщик";
-				numbers.splice(randomBorrower - 1, 1);
 
+				// Случайное число для заёмщика
+				var randomBorrower = this.randomInteger(1, arr.length);
+
+				borrowers[j] = arr[randomBorrower];
+				arr.splice(randomBorrower, 1)
+				if (borrowers[j] == 0 || borrowers[j] == undefined) { j--; continue }
+				this.participants[borrowers[j]-1].status = "Заёмщик"
+			
 			}
+
+			// Все остальные - не заёмщики
+			var nonBorrowers = arr;
+
+			for(m = 0; m < 4; m++) {
+				this.participants[nonBorrowers[m]-1].status = "Не заёмщик"
+			}
+
+			console.log("Банкир: " + bank)
+			console.log("Заёмщики: " + borrowers)
+			console.log("Не заёмщики: " + nonBorrowers)
 
 		},
 
@@ -208,8 +240,7 @@ var app = new Vue ({
 				/*console.log("Участник № " + setParticipant[0] + " принимает ресурсы от " + 
 					"учстника №" + getParticipant[0] + "\n" + 
 					"Участник № " + setParticipant[1] + " принимает ресурсы от " + 
-					"учстника №" + getParticipant[1])
-	*/
+					"учстника №" + getParticipant[1])*/
 
 				// Ресурсы принимающих и отдающих до сделки, ...
 				var setResours = [this.participants[setParticipant[0] - 1].actions,
@@ -264,7 +295,7 @@ var app = new Vue ({
 		for(i = 1; i < 10; i++) {
 			this.participants.push({
 				number: i,
-				status: "Не заёмщик",
+				status: null,
 				share: Math.random(),
 				actions: null,
 				wantResourse: this.randomInteger(0, 200),

@@ -13,12 +13,10 @@
 			<li v-for='(participant, index) in participants' class="participant">
 
 				<p>Участник номер {{participant.number}}</p>
-				<!-- <p>Статус: {{participant.status}}</p> -->
+				<p>Роль: {{participant.status}}</p>
 				<p>Ресурсов: {{participant.actions}}</p>
 				<p>Претендует на: {{participant.wantResourse}}</p>
-				<!-- <p>Готов купить у: {{participant.at[0]}}, {{participant.at[1]}}, {{participant.at[2]}}</p> -->
-				<!-- <p>Готов продать: {{participant.pretender[0]}}, {{participant.pretender[1]}}, {{participant.pretender[2]}}</p> -->
-				<p>Покупаю у: {{participant.purchase}}</p>
+				<!-- <p>Покупаю у: {{participant.purchase}}</p> -->
 				
 			</li>
 		</ul>
@@ -28,6 +26,8 @@
 			<input id="deactivate" type="button" value="Деактивация" v-on:click="deactivate">
 
 			<input id="exchange" type="button" value="Обмен" v-on:click="exchange">
+
+			<input id="distributionOfStatus" type="button" value="Меняем роли" v-on:click="distributionOfStatus">
 
 			<div id="count">Шагов: {{count}}</div>
 			
