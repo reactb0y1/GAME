@@ -100,6 +100,47 @@ var app = new Vue ({
 			console.log("Заёмщики: " + borrowers)
 			console.log("Не заёмщики: " + nonBorrowers)
 
+			// Обнуляем визуальное отображение игрока
+			for(n=0;n<arrLenght;n++) {
+				this.participants[n].playerJS = false;
+			}
+
+
+		},
+
+		// Выбираем игрока
+		choicePlaer: function () {
+			var arrLenght = this.participants.length;
+			var nonBorrowers = [];
+			
+			// Интересуемся кто у нас не заёмщик
+			for(i = 0; i < arrLenght; i++) {
+
+				if (this.participants[i].status == "Не заёмщик") {
+					nonBorrowers.push(i+1)
+				}
+
+			}
+
+			// Выбираем среди них одного
+			for(j = 0; j<1; j++) {
+				var random = this.randomInteger(1, nonBorrowers.length+1);
+				randomNonBorrower = nonBorrowers[random]
+				
+				if (random == undefined || randomNonBorrower == undefined) {
+					j--
+					continue
+				}
+
+			}
+
+			for(k=0;k<arrLenght;k++) {
+				this.participants[k].playerJS = false
+			}
+			
+			// Меняем его статус
+			this.participants[randomNonBorrower-1].playerJS = true;
+
 		},
 
 		// Функция, обеспечивающая равную вероятность попадения числа
@@ -301,13 +342,15 @@ var app = new Vue ({
 				wantResourse: this.randomInteger(0, 200),
 				at: null,
 				pretender: null,
-				purchase: []
+				purchase: [],
+				playerJS: false
 			})
 
 		}
 		
 		this.resourceAllocation();
 		this.distributionOfStatus();
+		this.choicePlaer();
 
 	}
 

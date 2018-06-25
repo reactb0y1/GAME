@@ -10,10 +10,10 @@
 	<div id="container">
 
 		<ul class="participants">
-			<li v-for='(participant, index) in participants' class="participant">
+			<li v-for='(participant, index) in participants' class="participant" v-bind:class="{playerStyle: participant.playerJS}">
 
 				<p>Участник номер {{participant.number}}</p>
-				<p>Роль: {{participant.status}}</p>
+				<!-- <p>Роль: {{participant.status}}</p> -->
 				<p>Ресурсов: {{participant.actions}}</p>
 				<p>Претендует на: {{participant.wantResourse}}</p>
 				<!-- <p>Покупаю у: {{participant.purchase}}</p> -->
@@ -23,11 +23,9 @@
 		
 		<div id="panel">
 
-			<input id="deactivate" type="button" value="Деактивация" v-on:click="deactivate">
+			<input id="deactivate" type="button" value="Убираем банкротов" v-on:click="deactivate">
 
 			<input id="exchange" type="button" value="Обмен" v-on:click="exchange">
-
-			<input id="distributionOfStatus" type="button" value="Меняем роли" v-on:click="distributionOfStatus">
 
 			<div id="count">Шагов: {{count}}</div>
 			
@@ -44,8 +42,6 @@
 </html>
 
 <!-- 
-- рандомизатор нужно поправлять
-- один раз не отобразился банкир
 - распределять по файлам
 - использовать классы
 	js ООП; классы
@@ -53,5 +49,4 @@
 	if (seller == undefined || numberSeller == undefined) 
 		Такого рода условия наверняка можно записать как-то кратче
 
-- в лгкой версии всё та же проблема - идёт бесконечный цикл, когда 3 участника осталось
  -->

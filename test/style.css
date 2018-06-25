@@ -53,16 +53,25 @@
 }
 
 #deactivate {
-	width: 100px;
-	height: 30px;
+	width: 150px;
+	height: 50px;
 }
 
 #wantLight {
 	width: 100px;
-	height: 30px;
+	height: 50px;
 }
 
 #exchange {
 	width: 100px;
-	height: 30px;
+	height: 50px;
+}
+
+#choicePlaer {
+	width: 150px;
+	height: 50px;
+}
+
+.playerStyle {
+	background-color: orange;
 }
