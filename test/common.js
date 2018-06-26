@@ -320,7 +320,12 @@ var app = new Vue ({
 					" ресурсами. После сделки их баланс " + setResoursAfter[1] + " и " +
 					getResoursAfter[1])
 
-				this.count = this.count + 1
+				this.count = this.count + 1;
+
+				for(m=0;m<arrLenght;m++) {
+					this.participants[m].wantResourse = this.randomInteger(0, 200)
+				}
+
 				
 			} else {
 				this.wantLight();
