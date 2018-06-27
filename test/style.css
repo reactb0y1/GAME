@@ -37,6 +37,10 @@
 	align-items: center;
 }
 
+#panel > input {
+	cursor: pointer;
+}
+
 #purchase {
 	width: 70px;
 	height: 30px;
@@ -74,4 +78,26 @@
 
 .playerStyle {
 	background-color: orange;
+}
+
+.container_keys {
+	width: 100px;
+	display: flex;
+	list-style: none;
+	height: 65px;
+	flex-wrap: wrap;
+}
+
+.container_keys > li {
+	width: 30px;
+}
+
+.container_keys > li > button {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.opacityStyle {
+	opacity: 0.5;
 }

@@ -6,6 +6,7 @@ var app = new Vue ({
 
 	data: {
 		participants: [],
+		keys: [],
 		count: 0
 	},
 
@@ -141,6 +142,9 @@ var app = new Vue ({
 			// Меняем его статус
 			this.participants[randomNonBorrower-1].playerJS = true;
 
+			// Отключаем соответствующую кнопку
+			this.keys[randomNonBorrower-1].disabledJS = true
+
 		},
 
 		// Функция, обеспечивающая равную вероятность попадения числа
@@ -204,15 +208,16 @@ var app = new Vue ({
 					var actions = this.participants[i].actions;
 
 					if (actions < 0) {
-						this.participants.splice(i, 1);
-						i = i - 1;
-						arrLenght = arrLenght - 1;
+						// Удаляем из массива
+						// this.participants.splice(i, 1)
+						// i = i - 1;
+						// arrLenght = arrLenght - 1;
+						this.participants[i].opacityJS = true;
+						this.keys[i].disabledJS = true;
 						continue
 					}
 				}
-					
 			}
-
 		},
 
 		// Выбор участников для сделки
@@ -236,15 +241,24 @@ var app = new Vue ({
 
 				// Наполняем массив
 				for(i = 0; i < arrLenght; i++) {
-					arr[i] = i + 1
+					if (this.participants[i].opacityJS == false) {
+					// if (this.participants[i].opacityJS == true) {
+						// Код в строке ниже сильно подводил
+						// arr[i] = this.participants[i].number
+						arr.push(this.participants[i].number)
+						
+					}
 				}
+				console.log("Наши участники: " + arr)
 
 				// Решаем между кем будет сделка
 				for(j = 0; j < 4; j++) {
 
 					var random = this.randomInteger(0, arrLenght) - 1;
+					// var random = this.randomInteger(0, arr.lenght) - 1;
 
-					if (random == undefined || random < 0 || arrWantLight == undefined) {
+					if (random == undefined || random < 0 || arrWantLight == undefined ||
+						arr[random] == undefined) {
 						j = j - 1;
 						continue
 					}
@@ -308,7 +322,7 @@ var app = new Vue ({
 					this.participants[getParticipant[l] - 1].actions = getResoursAfter[l]
 				}
 
-				console.log("Состоится 2 сделки" + "\n" + 
+				/*console.log("Состоится 2 сделки" + "\n" + 
 					"1) Участник №" + setParticipant[0] + ", владеющий " + setResours[0] + 
 					" ресурсами, берёт " + setResoursWant[0] + " ресурсов у участника №" +
 					getParticipant[0] + ", который изначально владеет " + getResours[0] +
@@ -318,7 +332,7 @@ var app = new Vue ({
 					" ресурсами, берёт " + setResoursWant[1] + " ресурсов у участника №" +
 					getParticipant[1] + ", который изначально владеет " + getResours[1] +
 					" ресурсами. После сделки их баланс " + setResoursAfter[1] + " и " +
-					getResoursAfter[1])
+					getResoursAfter[1])*/
 
 				this.count = this.count + 1;
 
@@ -348,7 +362,14 @@ var app = new Vue ({
 				at: null,
 				pretender: null,
 				purchase: [],
-				playerJS: false
+				playerJS: false,
+				opacityJS: false,
+				disabled: false
+			})
+
+			this.keys.push({
+				number: i,
+				disabledJS: false
 			})
 
 		}
