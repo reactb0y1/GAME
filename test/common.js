@@ -143,7 +143,9 @@ var app = new Vue ({
 			this.participants[randomNonBorrower-1].playerJS = true;
 
 			// Отключаем соответствующую кнопку
-			this.keys[randomNonBorrower-1].disabledJS = true
+			this.keys[randomNonBorrower-1].disabledJS = true;
+
+			// return randomNonBorrower
 
 		},
 
@@ -344,6 +346,28 @@ var app = new Vue ({
 			} else {
 				this.wantLight();
 			}
+
+		},
+
+		ourExchange: function(indexKey) {
+			// indexKey = indexKey + 1;
+
+			var playerActionsBefore = this.participants[indexKey].actions;
+			console.log("До сделки у участника №" + (indexKey+1) + " " +
+				playerActionsBefore + " ресурсов")
+
+			// Находим нашего персонажа и интересуемся сколько у него ресурсов
+			for(i=0;i<9;i++) {
+				if (this.participants[i].playerJS == true) {
+					var numberPlayer = i;
+					var playerActionsBefore = this.participants[i].actions
+				}
+			}
+
+			console.log(a)
+
+			var playerActionsAfter = playerActionsBefore + a;
+			console.log(playerActionsAfter)
 
 		}
 

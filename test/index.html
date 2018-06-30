@@ -30,7 +30,7 @@
 			<div id="count">Шагов: {{count}}</div>
 
 			<ul class="container_keys">
-				<li v-for="(key, indexKey) in keys"><button :disabled="key.disabledJS">{{key.number}}</button></li>
+				<li v-for="(key, indexKey) in keys"><button :disabled="key.disabledJS" v-bind:class="{opacityStyleButton: key.disabledJS}" v-on:click="ourExchange(indexKey)">{{key.number}}</button></li>
 			</ul>
 			
 		</div>
