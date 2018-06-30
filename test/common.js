@@ -350,7 +350,6 @@ var app = new Vue ({
 		},
 
 		ourExchange: function(indexKey) {
-			// indexKey = indexKey + 1;
 
 			var playerActionsBefore = this.participants[indexKey].actions;
 			console.log("До сделки у участника №" + (indexKey+1) + " " +
