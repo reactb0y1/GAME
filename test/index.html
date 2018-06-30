@@ -15,7 +15,7 @@
 				<p>Участник номер {{participant.number}}</p>
 				<!-- <p>Роль: {{participant.status}}</p> -->
 				<p>Ресурсов: {{participant.actions}}</p>
-				<p>Претендует на: {{participant.wantResourse}}</p>
+				<p>Претендует на: {{participant.wantActions}}</p>
 				<!-- <p>Покупаю у: {{participant.purchase}}</p> -->
 				
 			</li>
@@ -25,12 +25,12 @@
 
 			<input id="deactivate" type="button" value="Убираем банкротов" v-on:click="deactivate">
 
-			<input id="exchange" type="button" value="Обмен" v-on:click="exchange">
+			<!-- <input id="exchange" type="button" value="Обмен" v-on:click="exchange"> -->
 
 			<div id="count">Шагов: {{count}}</div>
 
 			<ul class="container_keys">
-				<li v-for="(key, indexKey) in keys"><button :disabled="key.disabledJS" v-bind:class="{opacityStyleButton: key.disabledJS}" v-on:click="ourExchange(indexKey)">{{key.number}}</button></li>
+				<li v-for="(key, indexKey) in keys"><button :disabled="key.disabledJS" v-bind:class="{opacityStyleButton: key.disabledJS}" v-on:click="exchangeTogether(indexKey)">{{key.number}}</button></li>
 			</ul>
 			
 		</div>

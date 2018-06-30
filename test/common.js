@@ -97,9 +97,9 @@ var app = new Vue ({
 				this.participants[nonBorrowers[m]-1].status = "Не заёмщик"
 			}
 
-			console.log("Банкир: " + bank)
-			console.log("Заёмщики: " + borrowers)
-			console.log("Не заёмщики: " + nonBorrowers)
+			// console.log("Банкир: " + bank)
+			// console.log("Заёмщики: " + borrowers)
+			// console.log("Не заёмщики: " + nonBorrowers)
 
 			// Обнуляем визуальное отображение игрока
 			for(n=0;n<arrLenght;n++) {
@@ -174,7 +174,7 @@ var app = new Vue ({
 			for(i = 0; i < arrLenght; i++) {
 				this.participants[i].share = Math.random();
 				this.participants[i].actions = null;
-				this.participants[i].wantResourse = this.randomInteger(0, 100);
+				this.participants[i].wantActions = this.randomInteger(0, 100);
 				this.participants[i].at = null;
 				this.participants[i].pretender = null;
 				this.participants[i].purchase = [];
@@ -304,8 +304,8 @@ var app = new Vue ({
 				this.participants[setParticipant[1] - 1].actions];
 				var getResours = [this.participants[getParticipant[0] - 1].actions,
 				this.participants[getParticipant[1] - 1].actions];
-				var setResoursWant = [this.participants[setParticipant[0] - 1].wantResourse,
-				this.participants[setParticipant[1] - 1].wantResourse]
+				var setResoursWant = [this.participants[setParticipant[0] - 1].wantActions,
+				this.participants[setParticipant[1] - 1].wantActions]
 				// console.log("Принимающие имеют ресурсы: " + setResours)
 				// console.log("Отдающие имеют ресурсы:" + getResours)
 				// console.log("Разница: " + setResoursWant)
@@ -339,7 +339,7 @@ var app = new Vue ({
 				this.count = this.count + 1;
 
 				for(m=0;m<arrLenght;m++) {
-					this.participants[m].wantResourse = this.randomInteger(0, 200)
+					this.participants[m].wantActions = this.randomInteger(0, 200)
 				}
 
 				
@@ -349,24 +349,70 @@ var app = new Vue ({
 
 		},
 
-		ourExchange: function(indexKey) {
+		// Определяем кто является нашим персонажем
+		whoIsOurPersonage: function() {
+			var personage = undefined;
 
-			var playerActionsBefore = this.participants[indexKey].actions;
-			console.log("До сделки у участника №" + (indexKey+1) + " " +
-				playerActionsBefore + " ресурсов")
-
-			// Находим нашего персонажа и интересуемся сколько у него ресурсов
-			for(i=0;i<9;i++) {
+			for(i=0;i<this.participants.length;i++) {
 				if (this.participants[i].playerJS == true) {
-					var numberPlayer = i;
-					var playerActionsBefore = this.participants[i].actions
+					personage = i+1
 				}
 			}
+			return personage
 
-			console.log(a)
+		},
 
-			var playerActionsAfter = playerActionsBefore + a;
-			console.log(playerActionsAfter)
+		exchangeTogether: function(indexKey) {
+
+			// Номер персонажа
+			var personage = this.whoIsOurPersonage();
+			// Объём ресурсов персонажа до сделки
+			var actionsPersonageBefore = this.participants[personage-1].actions;
+			// Объём ресурсов, на которые он претендует
+			var wantActionsPersonage = this.participants[personage-1].wantActions;
+			// Объём ресурсов у донатора до сделки
+			var actionsDonatorBefore = this.participants[indexKey].actions
+			
+			// Проводим рассчёты и устанавливаем новые значения
+			// Объём ресурсов у персонажа после сделки
+			var actionsPersonageAfter = actionsPersonageBefore + wantActionsPersonage;
+			// Объём ресурсов у донатора после сделки
+			var actionsDonatorAfter = actionsDonatorBefore - wantActionsPersonage;
+			this.participants[personage-1].actions = actionsPersonageAfter;
+			this.participants[indexKey].actions = actionsDonatorAfter;
+
+			/*Проводим рассчёты для всех остальных*/
+
+			var arrLenght = this.participants.length;
+			var arr = [];
+
+			for(i=0;i<arrLenght;i++) {
+				arr[i] = i+1;
+			}
+
+			// Убираем из массива всех, кто сделку уже осуществил
+			arr.splice(personage-1,1);
+			if (personage > (indexKey+1)) {
+				arr.splice(indexKey, 1);
+			} else {
+				arr.splice(indexKey - 1, 1);
+			}
+
+			arrLenght = arrLenght - 2;
+			console.log(arr)
+
+
+			if (arrLenght == 7 || arrLenght == 6) {
+
+
+
+			} /*else if (arrLenght == 5 || arrLenght == 4) {
+
+			} else if (arrLenght == 3 || arrLenght == 2) {
+
+			}*/
+
+			this.count = this.count + 1;
 
 		}
 
@@ -381,7 +427,7 @@ var app = new Vue ({
 				status: null,
 				share: Math.random(),
 				actions: null,
-				wantResourse: this.randomInteger(0, 200),
+				wantActions: this.randomInteger(0, 200),
 				at: null,
 				pretender: null,
 				purchase: [],
