@@ -399,14 +399,110 @@ var app = new Vue ({
 			}
 
 			arrLenght = arrLenght - 2;
-			console.log(arr)
 
+			// Между какими участниками в дальгейшем будут сделки
+			var arrWant = [];
 
 			if (arrLenght == 7 || arrLenght == 6) {
 
+				for(j = 0; j < 6; j++) {
+
+					var random = this.randomInteger(0, arrLenght) - 1;
+
+					if (random == undefined || random < 0 || arrWant == undefined ||
+					arr[random] == undefined) {
+						j = j - 1;
+						continue
+					}
+
+					arrWant[j] = arr[random];
+					arr.splice(random, 1);
+					arrLenght = arrLenght - 1;
+
+				}
+
+				// Принимают и отдают ресурсы
+				var setParticipant = [arrWant[0], arrWant[1], arrWant[2]];
+				var getParticipant = [arrWant[3], arrWant[4], arrWant[5]];
+
+				console.log("Принимают ресурсы: " + setParticipant)
+				console.log("Отдают ресурсы: " + getParticipant)
+
+				/*console.log("Участник № " + setParticipant[0] + " принимает ресурсы от " + 
+					"учстника №" + getParticipant[0] + "\n" + 
+					"Участник № " + setParticipant[1] + " принимает ресурсы от " + 
+					"учстника №" + getParticipant[1])*/
+
+				// Ресурсы принимающих и отдающих до сделки, ...
+				var setResours = [this.participants[setParticipant[0] - 1].actions,
+				this.participants[setParticipant[1] - 1].actions,
+				this.participants[setParticipant[2] - 1].actions];
+				var getResours = [this.participants[getParticipant[0] - 1].actions,
+				this.participants[getParticipant[1] - 1].actions,
+				this.participants[getParticipant[2] - 1].actions];
+				var setResoursWant = [this.participants[setParticipant[0] - 1].wantActions,
+				this.participants[setParticipant[1] - 1].wantActions,
+				this.participants[setParticipant[2] - 1].wantActions]
+				console.log("Принимающие имеют ресурсы: " + setResours)
+				console.log("Отдающие имеют ресурсы:" + getResours)
+				console.log("Разница: " + setResoursWant)
+
+				// ... и после сделки
+				var setResoursAfter = [];
+				var getResoursAfter = [];
+
+				for(k = 0; k < 3; k++) {
+					setResoursAfter[k] = setResours[k] + setResoursWant[k];
+					getResoursAfter[k] = getResours[k] - setResoursWant[k]
+				}
+
+				for(l = 0; l < 3; l++) {
+					this.participants[setParticipant[l] - 1].actions = setResoursAfter[l]
+					this.participants[getParticipant[l] - 1].actions = getResoursAfter[l]
+				}
+
+				console.log("Состоится 3 сделки" + "\n" +  "\n" +
+					"1) Участник №" + setParticipant[0] + ", владеющий " + setResours[0] + 
+					" ресурсами, берёт " + setResoursWant[0] + " ресурсов у участника №" +
+					getParticipant[0] + ", который изначально владеет " + getResours[0] +
+					" ресурсами. После сделки их баланс " + setResoursAfter[0] + " и " +
+					getResoursAfter[0] + "\n" + "\n" +
+					"2) Участник №" + setParticipant[1] + ", владеющий " + setResours[1] + 
+					" ресурсами, берёт " + setResoursWant[1] + " ресурсов у участника №" +
+					getParticipant[1] + ", который изначально владеет " + getResours[1] +
+					" ресурсами. После сделки их баланс " + setResoursAfter[1] + " и " +
+					getResoursAfter[1] + "\n" +  "\n" +
+					"3) Участник №" + setParticipant[2] + ", владеющий " + setResours[2] + 
+					" ресурсами, берёт " + setResoursWant[2] + " ресурсов у участника №" +
+					getParticipant[2] + ", который изначально владеет " + getResours[2] +
+					" ресурсами. После сделки их баланс " + setResoursAfter[2] + " и " +
+					getResoursAfter[2])
+
+				for(m = 0; m < this.participants.length; m++) {
+					this.participants[m].wantActions = this.randomInteger(0, 200)
+				}
+
+				// Убираем банкротов
+				for(i = 0; i < this.participants.length; i++) {
+					var actions = this.participants[i].actions;
+
+					if (actions < 0) {
+						// Удаляем из массива
+						arr.splice(i, 1)
+						i = i - 1;
+						// arrLenght = arrLenght - 1;
+						this.participants[i].opacityJS = true;
+						this.keys[i].disabledJS = true;
+						continue
+					}
+				}
+
+				console.log(arr)
 
 
-			} /*else if (arrLenght == 5 || arrLenght == 4) {
+			} 
+
+			/*else if (arrLenght == 5 || arrLenght == 4) {
 
 			} else if (arrLenght == 3 || arrLenght == 2) {
 
